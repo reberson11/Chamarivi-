@@ -1,0 +1,101 @@
+chamarivi/
+├─ lib/
+│  └─ main.dart
+├─ pubspec.yaml
+├─ android/
+├─ ios/
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const ChamariviApp());
+}
+
+class ChamariviApp extends StatelessWidget {
+  const ChamariviApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Chamarivi',
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chamarivi'),
+        ),
+        body: const Center(
+          child: Text(
+            'Chamarivi funcionando 🚀',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ),
+    );
+  }
+}
+name: chamarivi
+description: App de comunicação Chamarivi
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+git init
+git add .
+git commit -m "Projeto inicial Chamarivi"
+git branch -M main
+git remote add origin https://github.com/SEU_USUARIO/Chamarivi.git
+git push -u origin main
+Chamarivi/
+├─ .github/
+├─ chamarivi/
+│  ├─ lib/
+│  ├─ pubspec.yaml
+│  ├─ android/
+│  └─ ios/
+.github/workflows/build-apk.yml
+name: Build APK Chamarivi
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.19.6'
+          channel: 'stable'
+
+      - name: Flutter pub get
+        run: flutter pub get
+        working-directory: chamarivi
+
+      - name: Build APK
+        run: flutter build apk --release
+        working-directory: chamarivi
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: chamarivi-apk
+          path: chamarivi/build/app/outputs/flutter-apk/app-release.apk
+
